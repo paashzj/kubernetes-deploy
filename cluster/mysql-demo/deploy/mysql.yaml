@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: ttbb/mysql:stand-alone
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 2G
+            cpu: 1000m
+          requests:
+            memory: 2G
+            cpu: 1000m
+        volumeMounts:
+          - name: data-dir
+            mountPath: /var/lib/mysql
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name
+      volumes:
+        - name: data-dir
+          hostPath:
+            path: /opt/mysql/data

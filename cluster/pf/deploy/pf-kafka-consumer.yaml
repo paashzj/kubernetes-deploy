@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pf-kafka-consumer
+  labels:
+    app: pf-kafka-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pf-kafka-consumer
+  template:
+    metadata:
+      labels:
+        app: pf-kafka-consumer
+    spec:
+      containers:
+      - name: pf-kafka-consumer
+        image: ttbb/pf:pf-consumer
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 4G
+            cpu: 1000m
+          requests:
+            memory: 4G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name 

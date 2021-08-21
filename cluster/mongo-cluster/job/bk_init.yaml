@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bk-init
+spec:
+  template:
+    spec:
+      containers:
+        - name: bk-init
+          image: ttbb/bookkeeper:mate
+          command: ["bash", "-vx", "/opt/sh/bk-cluster/scripts/init.sh"]
+          env:
+            - name: ZK_ADDR
+              value: "zookeeper-0.zookeeper:2181,zookeeper-1.zookeeper:2181,zookeeper-2.zookeeper:2181"
+      restartPolicy: Never

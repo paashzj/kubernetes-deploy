@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: redis
+        image: ttbb/integrate:redis-exporter
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 4G
+            cpu: 2000m
+          requests:
+            memory: 4G
+            cpu: 2000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name
+        - name: PS1
+          value: '[\u@redis@\W]\$ '

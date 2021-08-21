@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pf-pulsar-consumer
+  labels:
+    app: pf-pulsar-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pf-pulsar-consumer
+  template:
+    metadata:
+      labels:
+        app: pf-pulsar-consumer
+    spec:
+      containers:
+      - name: pf-pulsar-consumer
+        image: ttbb/pf:pf-consumer
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 4G
+            cpu: 1000m
+          requests:
+            memory: 4G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name
+        - name: MIDDLEWARE
+          value: "PULSAR"
+        - name: ZK_ADDR
+          value: "zookeeper-0.zookeeper:2181,zookeeper-1.zookeeper:2181,zookeeper-2.zookeeper:2181"
+        - name: META_DATA_SERVICE_URI
+          value: "zookeeper-0.zookeeper:2181;zookeeper-1.zookeeper:2181;zookeeper-2.zookeeper:2181"
+        - name: CLUSTER_ENABLE
+          value: "true"

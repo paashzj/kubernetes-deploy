@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bash-test
+  labels:
+    app: bash-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bash-test
+  template:
+    metadata:
+      labels:
+        app: bash-test
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: bash-test
+        image: ttbb/base
+        command:
+          - tail
+          - '-f'
+          - /dev/null
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 2G
+            cpu: 1000m
+          requests:
+            memory: 2G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name
+        - name: PS1
+          value: '[\u@bash-test@\W]\$ '

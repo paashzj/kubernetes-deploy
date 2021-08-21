@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pulsar-function
+  labels:
+    app: pulsar-function
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pulsar-function
+  template:
+    metadata:
+      labels:
+        app: pulsar-function
+    spec:
+      containers:
+      - name: pulsar-function
+        image: ttbb/pulsar:function
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 2G
+            cpu: 1000m
+          requests:
+            memory: 2G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name

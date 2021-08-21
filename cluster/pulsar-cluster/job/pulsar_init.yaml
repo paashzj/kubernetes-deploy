@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pulsar-init
+spec:
+  template:
+    spec:
+      containers:
+        - name: pulsar-init
+          image: ttbb/pulsar:mate
+          env:
+            - name: ZK_ADDR
+              value: "zookeeper-0.zookeeper:2181,zookeeper-1.zookeeper:2181,zookeeper-2.zookeeper:2181"
+            - name: PULSAR_HTTP_ADDR
+              value: "http://pulsar.default.svc.cluster.local:8080"
+            - name: PULSAR_TCP_ADDR
+              value: "pulsar://pulsar.default.svc.cluster.local:6650"
+            - name: CLUSTER_ENABLE
+              value: "true"
+            - name: CLUSTER_INIT
+              value: "true" 
+      restartPolicy: Never

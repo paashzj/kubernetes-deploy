@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: prometheus
+        image: ttbb/prometheus:stand-alone
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 8G
+            cpu: 2000m
+          requests:
+            memory: 8G
+            cpu: 2000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name   
+        - name: PS1
+          value: '[\u@prometheus@\W]\$ ' 
+        - name: ZOOKEEPER_TYPE
+          value: 'static'
+        - name: ZOOKEEPER_HOSTS
+          value: 'zookeeper-0.zookeeper:7000,zookeeper-1.zookeeper:7000,zookeeper-2.zookeeper:7000'
+        - name: BOOKKEEPER_TYPE
+          value: 'static'
+        - name: BOOKKEEPER_HOSTS
+          value: 'bookkeeper-0.bookkeeper:8080,bookkeeper-1.bookkeeper:8080,bookkeeper-2.bookkeeper:8080'

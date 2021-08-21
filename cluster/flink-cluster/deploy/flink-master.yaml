@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-master
+  labels:
+    app: flink-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink-master
+  template:
+    metadata:
+      labels:
+        app: flink-master
+    spec:
+      containers:
+      - name: flink-master
+        image: ttbb/flink:master
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 2G
+            cpu: 1000m
+          requests:
+            memory: 2G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name

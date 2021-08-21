@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-config
+  labels:
+    app: mongo-config
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mongo-config
+  serviceName: "mongo-config"
+  template:
+    metadata:
+      labels:
+        app: mongo-config
+    spec:
+      containers:
+      - name: mongo-config
+        image: ttbb/mongo:nake
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 2G
+            cpu: 2000m
+          requests:
+            memory: 2G
+            cpu: 2000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name

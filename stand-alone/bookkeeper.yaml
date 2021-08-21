@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookkeeper
+  labels:
+    app: bookkeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookkeeper
+  template:
+    metadata:
+      labels:
+        app: bookkeeper
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: bookkeeper
+        image: ttbb/bookkeeper:stand-alone
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 2G
+            cpu: 1000m
+          requests:
+            memory: 2G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name
+        - name: PS1
+          value: '[\u@bookkeeper@\W]\$ '

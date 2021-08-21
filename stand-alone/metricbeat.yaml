@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: metricbeat
+  labels:
+    app: metricbeat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metricbeat
+  template:
+    metadata:
+      labels:
+        app: metricbeat
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: metricbeat
+        image: ttbb/metricbeat:nake
+        command:
+          - tail
+          - '-f'
+          - /dev/null
+        volumeMounts:
+          - mountPath: /opt/sh/collect/log
+            name: sh-log
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 2G
+            cpu: 1000m
+          requests:
+            memory: 2G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name 
+        - name: PS1
+          value: '[\u@metricbeat@\W]\$ '
+      volumes:
+      - name: sh-log
+        hostPath:
+          path: /opt/sh/log  

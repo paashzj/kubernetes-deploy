@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: hadoop-secondname
+  labels:
+    app: hadoop-secondname
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hadoop-secondname
+  serviceName: "hadoop-secondname"
+  template:
+    metadata:
+      labels:
+        app: hadoop-secondname
+    spec:
+      containers:
+      - name: hadoop-secondname
+        image: ttbb/hadoop:nake
+        imagePullPolicy: Always
+        command:
+          - tail
+          - '-f'
+          - /dev/null
+        resources:
+          limits:
+            memory: 2G
+            cpu: 1000m
+          requests:
+            memory: 2G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name

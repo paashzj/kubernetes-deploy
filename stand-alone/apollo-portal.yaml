@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apollo-portal
+  labels:
+    app: apollo-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apollo-portal
+  template:
+    metadata:
+      labels:
+        app: apollo-portal
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: bash-test
+        image: ttbb/apollo:portal
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 2G
+            cpu: 1000m
+          requests:
+            memory: 2G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name
+        - name: PS1
+          value: '[\u@apollo-portal@\W]\$ '

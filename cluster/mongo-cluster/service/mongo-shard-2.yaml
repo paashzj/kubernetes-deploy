@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-shard-2
+spec:
+  selector:
+    app: mongo-shard-2
+  clusterIP: None
+  sessionAffinity: None
+  ports:
+    - protocol: TCP
+      port: 27019
+      name: mongo-shard-2

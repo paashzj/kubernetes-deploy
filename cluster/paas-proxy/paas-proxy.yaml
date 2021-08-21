@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paas-proxy
+  labels:
+    app: paas-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paas-proxy
+  template:
+    metadata:
+      labels:
+        app: paas-proxy
+    spec:
+      containers:
+      - name: paas-proxy
+        image: ttbb/integrate:paas-proxy
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 4G
+            cpu: 1000m
+          requests:
+            memory: 4G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name                 

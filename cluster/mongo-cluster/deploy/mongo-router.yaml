@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-router
+  labels:
+    app: mongo-router
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-router
+  template:
+    metadata:
+      labels:
+        app: mongo-router
+    spec:
+      containers:
+      - name: mongo-router
+        image: ttbb/mongo:router
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 2G
+            cpu: 1000m
+          requests:
+            memory: 2G
+            cpu: 1000m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name

@@ -1,31 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis
+  name: pf-pulsar-producer
   labels:
-    app: redis
+    app: pf-pulsar-producer
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: pf-pulsar-producer
   template:
     metadata:
       labels:
-        app: redis
+        app: pf-pulsar-producer
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - name: redis
-        image: ttbb/redis:stand-alone
+      - name: pf-pulsar-producer
+        image: ttbb/pf:pf-producer
         imagePullPolicy: Always
         resources:
           limits:
-            memory: 2G
+            memory: 4G
             cpu: 1000m
           requests:
-            memory: 2G
+            memory: 4G
             cpu: 1000m
         env:
         - name: NODE_NAME
@@ -36,5 +34,9 @@ spec:
           valueFrom:
             fieldRef:
                 fieldPath: metadata.name
-        - name: PS1
-          value: '[\u@redis@\W]\$ '
+        - name: PRODUCE_TYPE
+          value: "PULSAR"
+        - name: PRODUCE_MINUTE
+          value: "10"
+        - name: PULSAR_ADDR
+          value: "pulsar://pulsar:6650"

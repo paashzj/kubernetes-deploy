@@ -19,7 +19,7 @@ spec:
       containers:
       - name: elasticsearch
         image: ttbb/elasticsearch:stand-alone
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 2G

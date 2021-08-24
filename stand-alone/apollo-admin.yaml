@@ -19,7 +19,7 @@ spec:
       containers:
       - name: bash-test
         image: ttbb/apollo:admin
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 2G

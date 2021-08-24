@@ -19,7 +19,7 @@ spec:
       containers:
       - name: prometheus
         image: ttbb/prometheus:stand-alone
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 8G

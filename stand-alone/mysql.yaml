@@ -19,7 +19,7 @@ spec:
       containers:
       - name: mysql
         image: ttbb/mysql:stand-alone
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 2G

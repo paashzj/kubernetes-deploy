@@ -19,7 +19,7 @@ spec:
       containers:
       - name: kibana
         image: ttbb/kibana:stand-alone
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 2G

@@ -26,7 +26,7 @@ spec:
         volumeMounts:
           - mountPath: /opt/sh/collect/log
             name: sh-log
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 2G

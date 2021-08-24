@@ -19,7 +19,7 @@ spec:
       containers:
       - name: node-exporter
         image: ttbb/node-exporter:stand-alone
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 2G

@@ -19,7 +19,7 @@ spec:
       containers:
       - name: grafana
         image: ttbb/grafana:stand-alone
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 2G

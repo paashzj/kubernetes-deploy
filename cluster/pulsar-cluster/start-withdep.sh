@@ -6,5 +6,5 @@ echo "start zookeeper"
 sleep 20
 bash $DIR/../bookkeeper-cluster/start.sh
 echo "start bookkeeper"
-sleep 10
+sleep 20
 bash $DIR/start.sh

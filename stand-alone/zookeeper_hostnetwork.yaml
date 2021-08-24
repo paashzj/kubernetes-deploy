@@ -19,7 +19,7 @@ spec:
       containers:
       - name: zookeeper
         image: ttbb/zookeeper:stand-alone
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 2G

@@ -8,6 +8,7 @@ spec:
       containers:
         - name: pulsar-init
           image: ttbb/pulsar:mate
+          imagePullPolicy: Always
           env:
             - name: ZK_ADDR
               value: "zookeeper-0.zookeeper:2181,zookeeper-1.zookeeper:2181,zookeeper-2.zookeeper:2181"

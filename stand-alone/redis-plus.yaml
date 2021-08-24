@@ -19,7 +19,7 @@ spec:
       containers:
       - name: redis
         image: ttbb/integrate:redis-exporter
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 4G

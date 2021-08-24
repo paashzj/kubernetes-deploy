@@ -17,7 +17,7 @@ spec:
       containers:
       - name: paas-proxy
         image: ttbb/integrate:paas-proxy
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: 4G

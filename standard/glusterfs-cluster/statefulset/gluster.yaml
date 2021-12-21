@@ -1,35 +1,32 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: pulsar
+  name: gluster
   labels:
-    app: pulsar
+    app: gluster
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: pulsar
+      app: gluster
+  serviceName: "gluster"
   template:
     metadata:
       labels:
-        app: pulsar
+        app: gluster
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - name: pulsar
-        image: ttbb/pulsar:stand-alone
+      - name: gluster
+        image: ttbb/gluster:mate
         imagePullPolicy: Always
         resources:
           limits:
-            memory: 2G
+            memory: 4G
             cpu: 1000m
           requests:
-            memory: 2G
+            memory: 4G
             cpu: 1000m
         env:
-        - name: REMOTE_MODE
-          value: "false"
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -38,5 +35,7 @@ spec:
           valueFrom:
             fieldRef:
                 fieldPath: metadata.name
-        - name: PS1
-          value: '[\u@pulsar@\W]\$ '
+        - name: gluster_NUMBER
+          value: "6"
+        - name: CLUSTER_ENABLE
+          value: "true"

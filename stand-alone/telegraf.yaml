@@ -23,9 +23,6 @@ spec:
           - tail
           - '-f'
           - /dev/null
-        volumeMounts:
-          - mountPath: /opt/sh/collect/log
-            name: sh-log
         imagePullPolicy: Always
         resources:
           limits:
@@ -45,7 +42,3 @@ spec:
                 fieldPath: metadata.name 
         - name: PS1
           value: '[\u@telegraf@\W]\$ '
-      volumes:
-      - name: sh-log
-        hostPath:
-          path: /opt/sh/log  

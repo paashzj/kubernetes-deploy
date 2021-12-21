@@ -1,24 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pulsar
+  name: metricbeat-pulsar
   labels:
-    app: pulsar
+    app: metricbeat-pulsar
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pulsar
+      app: metricbeat-pulsar
   template:
     metadata:
       labels:
-        app: pulsar
+        app: metricbeat-pulsar
     spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - name: pulsar
-        image: ttbb/pulsar:stand-alone
+      - name: metricbeat-pulsar
+        image: ttbb/base
+        command:
+          - tail
+          - '-f'
+          - /dev/null
         imagePullPolicy: Always
         resources:
           limits:
@@ -28,8 +32,6 @@ spec:
             memory: 2G
             cpu: 1000m
         env:
-        - name: REMOTE_MODE
-          value: "false"
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -39,4 +41,4 @@ spec:
             fieldRef:
                 fieldPath: metadata.name
         - name: PS1
-          value: '[\u@pulsar@\W]\$ '
+          value: '[\u@metricbeat-pulsar@\W]\$ '

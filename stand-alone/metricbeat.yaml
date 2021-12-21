@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: metricbeat
   labels:
@@ -18,14 +18,10 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: metricbeat
-        image: ttbb/metricbeat:nake
-        command:
-          - tail
-          - '-f'
-          - /dev/null
+        image: ttbb/metricbeat:mate
         volumeMounts:
-          - mountPath: /opt/sh/collect/log
-            name: sh-log
+          - name: procfs
+            mountPath: /proc
         imagePullPolicy: Always
         resources:
           limits:
@@ -43,9 +39,15 @@ spec:
           valueFrom:
             fieldRef:
                 fieldPath: metadata.name 
+        - name: PROM_HOST
+          value: "localhost"
+        - name: ES_HOST
+          value: "localhost"
+        - name: INFLUX_HOST
+          value: "localhost"
         - name: PS1
           value: '[\u@metricbeat@\W]\$ '
       volumes:
-      - name: sh-log
+      - name: procfs
         hostPath:
-          path: /opt/sh/log  
+          path: /hostfs

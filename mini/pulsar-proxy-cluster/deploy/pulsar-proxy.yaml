@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pulsar-proxy
+  labels:
+    app: pulsar-proxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pulsar-proxy
+  template:
+    metadata:
+      labels:
+        app: pulsar-proxy
+    spec:
+      containers:
+      - name: pulsar-proxy
+        image: ttbb/pulsar:mate
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 512M
+            cpu: 250m
+          requests:
+            memory: 512M
+            cpu: 250m
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: metadata.name
+        - name: ZK_ADDR
+          value: "zookeeper-0.zookeeper:2181,zookeeper-1.zookeeper:2181,zookeeper-2.zookeeper:2181"  
+        - name: CLUSTER_ENABLE
+          value: "true"      
+        - name: REMOTE_MODE
+          value: "false"
+        - name: PULSAR_ROLE
+          value: "proxy"
+        - name: PULSAR_MEM
+          value: "-Xms128M -Xmx128M -XX:MaxDirectMemorySize=128M"
+        - name: PULSAR_ADVERTISED_ADDRESS
+          value: "localhost"

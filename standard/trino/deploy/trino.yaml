@@ -1,35 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pulsar
+  name: trino
   labels:
-    app: pulsar
+    app: trino
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: pulsar
+      app: trino
   template:
     metadata:
       labels:
-        app: pulsar
+        app: trino
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - name: pulsar
-        image: ttbb/pulsar:stand-alone
+      - name: trino
+        image: ttbb/trino:mate
         imagePullPolicy: Always
         resources:
           limits:
-            memory: 2G
+            memory: 4G
             cpu: 1000m
           requests:
-            memory: 2G
+            memory: 4G
             cpu: 1000m
         env:
-        - name: REMOTE_MODE
-          value: "false"
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -37,6 +33,6 @@ spec:
         - name: POD_NAME
           valueFrom:
             fieldRef:
-                fieldPath: metadata.name
-        - name: PS1
-          value: '[\u@pulsar@\W]\$ '
+                fieldPath: metadata.name     
+        - name: REMOTE_MODE
+          value: "false"

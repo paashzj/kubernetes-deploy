@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookkeeper
+spec:
+  selector:
+    app: bookkeeper
+  clusterIP: None
+  sessionAffinity: None
+  ports:
+    - protocol: TCP
+      port: 3181
+      name: bk

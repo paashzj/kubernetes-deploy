@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulsar-proxy
+spec:
+  selector:
+    app: pulsar-proxy
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 6650
+      name: pulsar-proxy-tcp
+    - protocol: TCP
+      port: 8080
+      name: pulsar-proxy-http

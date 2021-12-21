@@ -18,7 +18,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: grafana
-        image: ttbb/grafana:stand-alone
+        image: ttbb/grafana:mate
         imagePullPolicy: Always
         resources:
           limits:

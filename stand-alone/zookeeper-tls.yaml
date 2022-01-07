@@ -40,3 +40,5 @@ spec:
           value: "1"
         - name: REMOTE_MODE
           value: "false"
+        - name: ZOOKEEPER_TLS_ENABLE
+          value: "true"
